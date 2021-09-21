@@ -50,7 +50,8 @@ export async function uploadToPlayStore(options: EditOptions, releaseFiles: stri
         core.exportVariable("INTERNAL_SHARING_DOWNLOAD_URLS", downloadUrls);
     } else {
         // Create a new Edit
-        core.info(`Creating a new Edit for this release`)
+        core.info(`Creating a new Edit for this release`);
+        core.info(`This is the status: ${options.status}`);
         const appEdit = await androidPublisher.edits.insert({
             auth: options.auth,
             packageName: options.applicationId
