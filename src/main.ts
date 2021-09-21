@@ -21,7 +21,7 @@ async function run() {
         const track = core.getInput('track', { required: true });
         const inAppUpdatePriority = core.getInput('inAppUpdatePriority', { required: false });
         const userFraction = core.getInput('userFraction', { required: false });
-        const status = core.getInput('status', { required: false });
+        let status = core.getInput('status', { required: false });
         const whatsNewDir = core.getInput('whatsNewDirectory', { required: false });
         const mappingFile = core.getInput('mappingFile', { required: false });
 
@@ -59,6 +59,9 @@ async function run() {
         } else {
             userFractionFloat = undefined;
         }
+        
+        // Set default status if not provided
+        if (!status) status = userFractionFloat ? 'inProgress' : 'completed';
 
         // Validate the inAppUpdatePriority to be a valid number in within [0, 5]
         let inAppUpdatePriorityInt: number | undefined = parseInt(inAppUpdatePriority);
@@ -106,6 +109,8 @@ async function run() {
         }
 
         const authClient = await auth.getClient();
+
+        core.setFailed(`This is the status: ${status}`);
 
         const result = await uploadToPlayStore({
             auth: authClient,
